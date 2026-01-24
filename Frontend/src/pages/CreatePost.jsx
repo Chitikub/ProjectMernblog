@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PostService } from "../services/post.service"; // ตรวจสอบ path ให้ถูก
+import { PostService } from "../services/post.service"; 
 import Swal from "sweetalert2";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState(null); // เก็บไฟล์รูปภาพ
-  const [preview, setPreview] = useState(null); // เก็บ URL รูปเพื่อแสดงตัวอย่าง
+  const [file, setFile] = useState(null); 
+  const [preview, setPreview] = useState(null); 
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
 
-  // ฟังก์ชันจัดการเมื่อเลือกไฟล์รูป
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // สร้าง URL จำลองเพื่อแสดงรูป Preview
+      setPreview(URL.createObjectURL(selectedFile)); 
     }
   };
 
-  // ฟังก์ชันจัดการเมื่อกด Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation เบื้องต้น
+
     if (!title || !summary || !content || !file) {
       Swal.fire({
         icon: "warning",
@@ -36,12 +35,11 @@ const CreatePost = () => {
       return;
     }
 
-    // เตรียมข้อมูลแบบ FormData (สำคัญมากสำหรับการส่งไฟล์)
     const formData = new FormData();
     formData.append("title", title);
     formData.append("summary", summary);
     formData.append("content", content);
-    formData.append("file", file); // ชื่อ key ต้องตรงกับที่ Backend รับ (req.file)
+    formData.append("file", file); 
 
     try {
       setLoading(true);
@@ -54,7 +52,7 @@ const CreatePost = () => {
           text: "สร้างโพสต์ใหม่เรียบร้อยแล้ว",
           timer: 1500,
         });
-        navigate("/"); // สร้างเสร็จเด้งกลับหน้าแรก
+        navigate("/"); 
       }
     } catch (error) {
       console.error(error);
@@ -74,7 +72,6 @@ const CreatePost = () => {
       
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Title Input */}
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text font-semibold text-lg">Title</span>
@@ -88,7 +85,6 @@ const CreatePost = () => {
           />
         </div>
 
-        {/* Summary Input */}
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text font-semibold text-lg">Summary</span>
@@ -102,7 +98,7 @@ const CreatePost = () => {
           />
         </div>
 
-        {/* Image Upload & Preview */}
+
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text font-semibold text-lg">Cover Image</span>
@@ -113,7 +109,7 @@ const CreatePost = () => {
             onChange={handleFileChange}
             accept="image/*"
           />
-          {/* แสดงรูป Preview ถ้ามีการเลือกไฟล์ */}
+
           {preview && (
             <div className="mt-4">
               <img 
@@ -125,20 +121,19 @@ const CreatePost = () => {
           )}
         </div>
 
-        {/* Content Textarea */}
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text font-semibold text-lg">Content</span>
           </label>
           <textarea
-            className="textarea textarea-bordered h-64 text-base leading-relaxed"
+            className="textarea textarea-bordered h-64  input-bordered w-full"
             placeholder="Write your story here..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
           ></textarea>
         </div>
 
-        {/* Submit Button */}
+
         <button 
           type="submit" 
           className={`btn btn-primary w-full text-lg ${loading ? "loading" : ""}`}
