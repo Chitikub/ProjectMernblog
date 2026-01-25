@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Post from "../component/Post";
 import Swal from "sweetalert2";
-import { PostService } from "../services/Post.service";
+import { PostService } from "../services/post.service";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
